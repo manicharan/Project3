@@ -7,10 +7,10 @@ import com.example.udacity.service.PlantService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/plant")
@@ -21,6 +21,15 @@ public class PlantController {
     public PlantDTO getPlantDTO(String name){
         return convertPlantToPlantDTO(plantService.getPlantByName(name));
 
+    }
+    @PostMapping
+    public Long savePlant(@RequestBody Plant plant){
+        return plantService.save(plant);
+    }
+    @JsonView(Views.Public.class)
+    @GetMapping("/{price}")
+    public List<Plant> getPlantsCheaper(@PathVariable("price") BigDecimal price){
+        return plantService.getPlantsCheaper(price);
     }
 
     private PlantDTO convertPlantToPlantDTO(Plant plantByName) {

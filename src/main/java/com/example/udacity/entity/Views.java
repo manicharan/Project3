@@ -4,4 +4,5 @@ import java.math.BigDecimal;
 
 public class Views {
     public interface Public{}
+    public interface DeliveryOnly{}
 }

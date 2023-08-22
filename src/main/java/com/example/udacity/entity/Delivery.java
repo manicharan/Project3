@@ -1,10 +1,12 @@
 package com.example.udacity.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,15 +18,23 @@ public class Delivery {
     @GeneratedValue
     private Long id;
     @Nationalized
+    @JsonView(Views.DeliveryOnly.class)
     private String name;
+    @JsonView(Views.DeliveryOnly.class)
     @Column(name="address_full",length = 500)
     private String address;
+    @JsonView(Views.DeliveryOnly.class)
     private LocalDateTime date;
     @Type(type="yes_no")
     private Boolean isDelivered;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "delivery",cascade = CascadeType.ALL)
     private List<Plant> plants;
     public Delivery(){}
+    public Delivery(String name){
+        this.name=name;
+        this.isDelivered=false;
+        this.plants=new ArrayList<>();
+    }
 
     public List<Plant> getPlants() {
         return plants;
